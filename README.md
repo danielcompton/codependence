@@ -26,11 +26,6 @@ invoked in response to the value being a map with special keys
 
 As you wish!
 
-config:
-
-```edn
-```
-
 ```clojure
 (ns myapp.app
  (:require [irresponsible.codependence :as c]
