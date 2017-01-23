@@ -1,4 +1,5 @@
 (ns irresponsible.codependence
+  #?(:clj (:refer-clojure :exclude [ref]))
   (:require [#?(:clj clojure.spec :cljs cljs.spec) :as s]
             [integrant.core :as i]))
 
