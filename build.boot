@@ -1,5 +1,5 @@
 (set-env!
-  :resource-paths #{"src"}
+  :resource-paths #{"src" "resources"}
   :source-paths #{"src"}
   :dependencies '[[org.clojure/clojure "1.9.0-alpha15" :scope "provided"]
                   [integrant "0.3.0"]
