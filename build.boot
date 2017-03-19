@@ -7,7 +7,9 @@
                   [org.clojure/clojurescript "1.9.495" :scope "test"]
                   [adzerk/boot-test        "1.2.0"     :scope "test"]
                   [adzerk/boot-cljs        "2.0.0"     :scope "test"]
-                  [crisptrutski/boot-cljs-test "0.3.0" :scope "test"]])
+                  [crisptrutski/boot-cljs-test "0.3.0" :scope "test"]]
+  :repositories #(conj % ["clojars" {:url "https://clojars.org/repo/"}])
+  )
 
 (require '[adzerk.boot-test :as t]
          '[crisptrutski.boot-cljs-test :refer [test-cljs]])
@@ -16,6 +18,13 @@
  pom {:project 'irresponsible/codependence
       :version "0.1.0"
       :description "Lightweight, flexible, configuration-driven dependencies-resolved app structure"}
+ push {:tag true
+       :ensure-branch "master"
+       :ensure-release true
+       :ensure-clean true
+       :gpg-sign true
+       :repo "clojars"
+ }
  target {:dir #{"target"}})
 
 (deftask testing []
