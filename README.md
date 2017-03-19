@@ -22,9 +22,26 @@ keys in the map, they are simply unique identifiers and code is
 invoked in response to the value being a map with special keys
 (`:co/load`, `:co/tag`)
 
+## Requirements
+
+* Clojure 1.8.0 or newer
+* If you're not using a spec-enabled 1.9 alpha, [future-spec](https://github.com/tonsky/clojure-future-spec)
+
+Note: We consider the 1.9 alphas sufficiently production-ready and that the
+alpha status corresponds more to the newness and unpolishedness of spec.
+The 1.9 series included a ton of bugfixes and performance improvements you 
+might want to consider having access to.
+
 ## Just show me already!
 
-As you wish!
+Dependencies:
+
+```clojure
+[org.clojure/clojure "1.8.0"]
+[clojure-future-spec "1.9.0-alpha15"]
+;; OR just this if you're brave:
+[org.clojure/clojure "1.9.0-alpha15"] 
+```
 
 ```clojure
 (ns myapp.app
