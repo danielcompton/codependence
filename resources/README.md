@@ -6,9 +6,8 @@ a more flexible data-driven way to manage your app structure
 
 ## Why?
 
-- because component has severe shortcomings
-- because oolong showed the severe shortcomings of component too well
-- because integrant didn't quite rectify them
+- we discovered shortcomings in component while building oolong
+- integrant *almost* rectified them
 
 This uses integrant internally, because it's a pretty solid base
 
