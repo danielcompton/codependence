@@ -1,3 +1,4 @@
+; vim: syntax=clojure
 (set-env!
   :resource-paths #{"src" "resources"}
   :source-paths #{"src"}
