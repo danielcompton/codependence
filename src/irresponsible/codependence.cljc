@@ -1,7 +1,8 @@
 (ns irresponsible.codependence
   #?(:clj (:refer-clojure :exclude [ref]))
   (:require [#?(:clj clojure.spec :cljs cljs.spec) :as s]
-            [integrant.core :as i]))
+            [integrant.core :as i]
+            #?(:clj [clojure.edn :as edn])))
 
 (defmulti start-tag (fn [t _] t) :default ::default)
 (defmulti stop-tag  (fn [t _] t) :default ::default)
@@ -50,3 +51,9 @@
   ([system keys]
    (i/reverse-run! system keys stop-key)))
 
+#?
+(:clj
+ (defn read-string
+   "Read a config from a string of edn. Refs may be denotied by tagging keywords with #co/ref."
+     ([opts s]
+      (edn/read-string {:readers {:co/ref ref} :eof nil} s))))

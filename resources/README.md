@@ -16,10 +16,63 @@ This is my second attempt to write this library. The previous attempt
 
 ## How does it work?
 
-It's like integrant, except instead of giving special meaning to the
-keys in the map, they are simply unique identifiers and code is
-invoked in response to the value being a map with special keys
-(`:co/load`, `:co/tag`)
+Your service configuration takes the form of a map. Keys are keywords naming the services and values can be any clojure data.
+
+If the value is a map, it might be a component! A component has a `:co/tag` entry which allows you to name the responsible component with a keyword:
+
+```edn
+{:foo/bar {:co/tag :myapp/bar}}
+```
+
+Here we have a component named `:foo/bar`, tagged `:myapp/bar`
+
+We can hook the `:myapp/bar` tag like this:
+
+```clojure
+(require '[irresponsible.codependence :as c])
+(defmethod c/start-tag :foo/bar
+  [_ v] ;; [keyword, component data (without `:co/*` keys)]
+  (do-something v))
+```
+
+When you start the system, you get back a map where the `:foo/bar` entry's value has been replaced with the result of running `(do-something)`. You are free to return whatever you like from this function. Perhaps you will return a database connection or a webserver in a real world component? Perhaps for complex scenarios starting your component might return a map of which whatever connection or handle is just one part.
+
+There is a corresponding `stop-tag` multimethod we can hook like so:
+
+```clojure
+(require '[irresponsible.codependence :as c])
+(defmethod c/stop-tag :foo/bar
+  [_ v] ;; [keyword, return from start-tag]
+  (stop-something v))
+```
+
+We can also refer to keys within the map either by the `#co/ref` edn tag if you are using the `c/read-string` function or via the `c/ref` function. This provides us with a means of dependency resolution:
+
+```edn
+{:foo/bar  {:co/tag :myapp/bar}
+ :baz/quux {:co/tag :myapp/quux :bar #co/ref :foo/bar}}
+```
+
+Here the start-tag handler for :baz/quux will find a key `:bar` with the value of the `:foo/bar` key after the start-tag `:myapp/bar` has been run.
+
+Here's a example that tries to make this more clear:
+
+```edn
+{:service/print {:co/tag :misc/print :value #co/ref :service/square}
+ :service/square {:co/tag :math/square :input #co/ref :data/input}
+ :data/input 2}
+```
+
+```clojure
+(require '[irresponsible.codependence :as c])
+(defmethod c/start-tag :math/square
+  [_ {:keys [input]}] ; receives the value 2 (by `#co/ref`)
+  (* input input)) ; returns a simple integer
+(defmethod c/start-tag :misc/print
+  [_ {:keys [value]}] ;; receives the value 4 (2 squard) by `#co/ref` (because :math/square has already been started)
+  (prn :print-service value)
+  value)
+```
 
 ## Requirements
 
@@ -31,7 +84,9 @@ alpha status corresponds more to the newness and unpolishedness of spec.
 The 1.9 series included a ton of bugfixes and performance improvements you
 might want to consider having access to.
 
-## Just show me already!
+## Real-world example
+
+This models how we might construct a ring webapp using the aleph webserver. We hope you are familiar with ring!
 
 Dependencies:
 
@@ -46,7 +101,7 @@ Dependencies:
 (ns myapp.app
  (:require [irresponsible.codependence :as c]
            [myapp.routes :refer [app-routes]] ;; fictional routes!
-		   [myapp.middleware :refer [wrap]] ;; fictional middleware wrapper!
+           [myapp.middleware :refer [wrap]] ;; fictional middleware wrapper!
            [aleph.http :as http]))
 
 (def config
@@ -57,6 +112,8 @@ Dependencies:
 ;; very lightweight aleph component
 (defmethod c/start-tag :http/aleph [_ {:keys [handler port]}]
  (http/start-server handler {:port port}))
+(defmethod c/stop-tag :http/aleph [_ v]
+  (.close v))
 
 ;; very lightweight handler middleware-wrapping component
 ;; we assume it takes a profile argument that indicates which
@@ -64,6 +121,17 @@ Dependencies:
 (defmethod c/start-tag :http/make-handler
   [_ {:keys [handler middleware middleware-args]}]
   (apply middleware handler middleware-args))
+
+(def service nil)
+
+(defn start []
+  (alter-var-root #'service
+    (fn [_] (c/start! (c/read-string (slurp "config.edn"))))))
+
+(defn stop []
+  (alter-var-root #'service
+    (fn [v] (c/stop! v))))
+
 ```
 
 ## Copyright and License
