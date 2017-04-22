@@ -27,7 +27,8 @@
              (cond (symbol? l) (do-require l v)
                    (seq v)     (doseq [l2 l] (do-require l2 v)))))
       (if-let [t (:co/tag v)]
-        (vary-meta (start-tag t v) assoc ::tag t)
+        (let [v2 (dissoc v :co/load :co/tag)]
+          (vary-meta (start-tag t v2) assoc ::tag t))
         v))
     v))
 
@@ -57,3 +58,4 @@
    "Read a config from a string of edn. Refs may be denotied by tagging keywords with #co/ref."
      ([opts s]
       (edn/read-string {:readers {:co/ref ref} :eof nil} s))))
+
