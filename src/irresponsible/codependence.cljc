@@ -1,6 +1,6 @@
 (ns irresponsible.codependence
   #?(:clj (:refer-clojure :exclude [ref]))
-  (:require [#?(:clj clojure.spec :cljs cljs.spec) :as s]
+  (:require [#?(:clj clojure.spec.alpha :cljs cljs.spec.alpha) :as s]
             [integrant.core :as i]
             #?(:clj [clojure.edn :as edn])))
 
