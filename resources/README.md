@@ -21,29 +21,33 @@ Your service configuration takes the form of a map. Keys are keywords naming the
 If the value is a map, it might be a component! A component has a `:co/tag` entry which allows you to name the responsible component with a keyword:
 
 ```edn
-{:foo/bar {:co/tag :myapp/bar}}
+{:service/db {:co/tag :db/postgres}}
 ```
 
 Here we have a component named `:foo/bar`, tagged `:myapp/bar`
 
-We can hook the `:myapp/bar` tag like this:
+We can hook the `:db/postgres` tag like this:
 
 ```clojure
 (require '[irresponsible.codependence :as c])
-(defmethod c/start-tag :foo/bar
+(defmethod c/start-tag :db/postgres
   [_ v] ;; [keyword, component data (without `:co/*` keys)]
-  (do-something v))
+  {:pool (connect-pool v)})
 ```
 
-When you start the system, you get back a map where the `:foo/bar` entry's value has been replaced with the result of running `(do-something)`. You are free to return whatever you like from this function. Perhaps you will return a database connection or a webserver in a real world component? Perhaps for complex scenarios starting your component might return a map of which whatever connection or handle is just one part.
+When you start the system, you get back a map where the `:service/db`
+entry's value has been replaced with the result of running
+`(connect-pool)`. The map is returned because the result of a
+start-tag defmethod must be able to hold metadata (implement `IMeta`)
+and random java libraries...don't.
 
 There is a corresponding `stop-tag` multimethod we can hook like so:
 
 ```clojure
 (require '[irresponsible.codependence :as c])
-(defmethod c/stop-tag :foo/bar
-  [_ v] ;; [keyword, return from start-tag]
-  (stop-something v))
+(defmethod c/stop-tag :db/postgres
+  [_ {:keys [pool]}] ;; [keyword, return from start-tag]
+  (stop-pool pool))
 ```
 
 We can also refer to keys within the map either by the `#co/ref` edn tag if you are using the `c/read-string` function or via the `c/ref` function. This provides us with a means of dependency resolution:

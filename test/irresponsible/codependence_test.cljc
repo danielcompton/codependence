@@ -51,7 +51,7 @@
            :b {:sent :inel}
            :c {:a (i/ref :a) :co/tag ::start-test}}
         e1 {:a {:sent :inel} :b {:sent :inel} :c {:senti :nel}}
-        e2 {:a {:sent :inel} :co/tag ::start-test}
+        e2 {:a {:sent :inel}}
         p1 (atom nil)]
     (defmethod c/start-tag ::start-test [_ v] (reset! p1 v) {:senti :nel})
     (t/is (= e1 (c/start! c)))
