@@ -16,7 +16,7 @@
 
 (task-options!
  pom {:project 'irresponsible/codependence
-      :version "0.1.1"
+      :version "0.2.0"
       :description "Lightweight, flexible, configuration-driven dependencies-resolved app structure"}
  push {:tag true
        :ensure-branch "master"
