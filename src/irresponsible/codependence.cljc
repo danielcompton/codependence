@@ -56,6 +56,6 @@
 (:clj
  (defn read-string
    "Read a config from a string of edn. Refs may be denotied by tagging keywords with #co/ref."
-     ([opts s]
-      (edn/read-string {:readers {:co/ref ref} :eof nil} s))))
+   ([s]      (edn/read-string {:readers {'co/ref ref} :eof nil} s))
+   ([opts s] (read-string s))))
 
