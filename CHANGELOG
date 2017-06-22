@@ -1,4 +1,10 @@
-v0.1.1
+v0.2.0 - 22 Jun 2017
+- Support 1-arg read-string in clojure
+- :co/tag and :co/load instructions no longer pass-through as incidental
+  metadata in their containing maps
+- Upgraded to sync with Clojure 1.9.0-alpha17, including Cognitect's renaming
+  of clojure.spec to clojure.spec.alpha
+- Update to integrant 0.4.0
 
 v0.1.0 - 19 Mar 2017
 - First release
