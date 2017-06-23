@@ -1,4 +1,4 @@
-v0.2.0 - 22 Jun 2017
+v0.2.0 - 23 Jun 2017
 - Support 1-arg read-string in clojure
 - :co/tag and :co/load instructions no longer pass-through as incidental
   metadata in their containing maps
