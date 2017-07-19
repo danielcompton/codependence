@@ -6,6 +6,8 @@
     '[[org.clojure/clojure "1.9.0-alpha17" :scope "provided"]]))
 
 (set-env!
+  :project 'irresponsible/codependence
+  :version "0.2.1"
   :resource-paths #{"src" "resources"}
   :source-paths #{"src"}
   :dependencies #(into % '[[integrant "0.4.0"]
@@ -20,8 +22,8 @@
          '[crisptrutski.boot-cljs-test :refer [test-cljs]])
 
 (task-options!
- pom {:project 'irresponsible/codependence
-      :version "0.2.1"
+ pom {:project (get-env :project)
+      :version (get-env :version)
       :description "Lightweight, flexible, configuration-driven dependencies-resolved app structure"}
  push {:tag true
        :ensure-branch "master"
