@@ -15,7 +15,6 @@
                   [adzerk/boot-test        "1.2.0"     :scope "test"]
                   [adzerk/boot-cljs        "2.0.0"     :scope "test"]
                   [crisptrutski/boot-cljs-test "0.3.0" :scope "test"]])
-  :repositories #(conj % ["clojars" {:url "https://clojars.org/repo/"}])
   )
 
 (require '[adzerk.boot-test :as t]
