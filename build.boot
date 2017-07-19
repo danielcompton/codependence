@@ -24,7 +24,10 @@
 (task-options!
  pom {:project (get-env :project)
       :version (get-env :version)
-      :description "Lightweight, flexible, configuration-driven dependencies-resolved app structure"}
+      :description "Lightweight, flexible, configuration-driven dependencies-resolved app structure"
+      :url (str "https://github.com/" (get-env :project))
+      :scm {:url (str "https://github.com/" (get-env :project))}
+      :license {"MIT" "https://en.wikipedia.org/MIT_License"}}
  push {:tag true
        :ensure-branch "master"
        :ensure-release true
