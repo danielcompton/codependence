@@ -2,6 +2,10 @@ The irresponsible clojure guild presents...
 
 # codependence
 
+[![Clojars Project](https://img.shields.io/clojars/v/irresponsible/codependence.svg)](https://clojars.org/irresponsible/codependence)
+[![cljdoc badge](https://cljdoc.org/badge/irresponsible/codependence)](https://cljdoc.org/d/irresponsible/codependence)
+[![CircleCI](https://circleci.com/gh/clj-commons/codependence.svg?style=svg)](https://circleci.com/gh/clj-commons/codependence)
+
 a more flexible data-driven way to manage your app structure
 
 ## Why?
